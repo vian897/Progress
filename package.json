@@ -14,7 +14,8 @@
     "native-base": "^2.13.14",
     "nodemon": "^2.0.4",
     "react": "16.13.1",
-    "react-native": "0.63.2"
+    "react-native": "0.63.2",
+    "react-native-swipe-list-view": "^3.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
