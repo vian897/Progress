@@ -1,10 +1,11 @@
 
 import React, {
-    Component
+    Component,
 } from 'react';
 
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, TouchableHighlight, Alert, Modal, Button } from 'react-native';
 
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, TouchableHighlight } from 'react-native';
+// import {} from
 
 import {
     Container,
@@ -13,7 +14,6 @@ import {
     Content,
     Footer,
     FooterTab,
-    Button,
     Left,
     Right,
     Body,
@@ -25,9 +25,9 @@ import {
     Form
 } from 'native-base';
 
-import axios from 'axios'
+import axios from 'axios';
 
-import { SwipeListView } from 'react-native-swipe-list-view'
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 export default class AnatomyExample extends Component {
     constructor(props) {
@@ -37,11 +37,23 @@ export default class AnatomyExample extends Component {
 
         this.state = {
             username: '',
+            modalVisible: false,
+            lastRefresh: Date(Date.now()).toString(),
+
         }
+        this.refreshScreen = this.refreshScreen.bind(this)
     }
 
-    componentDidMount() {
-        axios.get('http://192.168.1.20:5000/users/')
+    setModalVisible = (visible) => {
+        this.setState({ modalVisible: visible });
+    }
+
+    refreshScreen() {
+        this.setState({ lastRefresh: Date(Date.now()).toString() })
+    }
+
+    getData() {
+        axios.get('http://192.168.1.20:5000/exercises/')
             .then(Response => {
                 const users = Response.data;
                 this.setState({ users })
@@ -51,6 +63,32 @@ export default class AnatomyExample extends Component {
                 console.log(Error);
             })
     }
+
+    getDataspec(id) {
+        axios.get(`http://192.168.1.20:5000/exercises/update/${id}`)
+            .then(Response => {
+                const users = Response.data;
+                this.setState({ users })
+                console.log(users)
+            })
+            .catch((Error) => {
+                console.log(Error);
+            })
+    }
+
+
+    componentDidMount() {
+        axios.get('http://192.168.1.20:5000/exercises/')
+            .then(Response => {
+                const users = Response.data;
+                this.setState({ users })
+                console.log(users)
+            })
+            .catch((Error) => {
+                console.log(Error);
+            })
+    }
+
 
     key = (item, index) => index.toString()
 
@@ -75,50 +113,124 @@ export default class AnatomyExample extends Component {
     //     axios.post('http://192.168.1.20:5000/users/add', users)
     //         .then(res => console.log(res.data))
     // }
+    createTwoButtonAlert(id, name, deskripsi, durasi) {
+        Alert.alert(
+            "Action",
+            "Select Action",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Ask me later pressed")
+                },
+                {
+                    text: "EDIT",
+                    onPress: () => {
+                        this.props.navigation.navigate('Update', { ID: id, NAMA: name, DESKRIPSI: deskripsi, DURASI: durasi });
+                    },
+                    style: "cancel"
+                },
+                {
+                    text: "DELETE", onPress: () => {
+                        axios.delete(`http://192.168.1.20:5000/exercises/${id}`).then(res => console.log(res.data));
+                        this.getData()
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
+    }
+
+    createThreeButtonAlert = () =>
+        Alert.alert(
+            "Alert Title",
+            "My Alert Msg",
+            [
+                {
+                    text: "Ask me later",
+                    onPress: () => console.log("Ask me later pressed")
+                },
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+            ],
+            { cancelable: false }
+        );
+    keyExtractor = (item, index) => index.toString()
 
     render() {
-        return (<View style={styles.container} >
-            <View style={styles.header}>
-                <Text style={styles.txtHeader}> Daftar User </Text>
+        const { modalVisible } = this.state;
+
+        return (
+            <View style={styles.container} >
+                <View style={styles.header}>
+                    <Text style={styles.txtHeader}> Daftar User </Text>
+                </View>
+
+
+                <SwipeListView
+                    keyExtractor={this.keyExtractor}
+                    data={this.state.users}
+                    renderItem={({ item }) => (
+                        <TouchableHighlight
+                            onPress={() => {
+                                console.log(item._id);
+                                this.createTwoButtonAlert(item._id, item.username, item.description, item.date)
+                            }}
+                            style={styles.rowFront}
+                            underlayColor={'#EEEEEE'}
+                        >
+                            <View>
+                                <Text>
+                                    {item.username}
+                                </Text>
+                                <Text>
+
+                                    {item.description}
+                                </Text>
+                                <Text>
+                                    {item.date}
+                                </Text>
+
+                                {/* <Modal
+                                    animationType="slide"
+                                    transparent={true}
+                                    visible={modalVisible}
+                                    onRequestClose={() => {
+                                        Alert.alert("Modal has been closed.");
+                                    }}
+                                >
+                                    <View style={styles.centeredView}>
+                                        <View style={styles.modalView}>
+                                            <Text style={styles.modalText}>ini deskripsi {item.description}</Text>
+
+                                            <TouchableHighlight
+                                                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                                                onPress={() => {
+                                                    this.setModalVisible(!modalVisible);
+                                                }}
+                                            >
+                                                <Text style={styles.textStyle}>Hide Modal</Text>
+                                            </TouchableHighlight>
+                                        </View>
+                                    </View>
+                                </Modal> */}
+                            </View>
+
+                        </TouchableHighlight>
+
+                    )}
+                />
+
+
+                <Button
+                    title={"REFRESH"}
+                    onPress={this.createThreeButtonAlert}
+                />
             </View>
-            <SwipeListView
-                data={this.state.users}
-                renderItem={({ item }) => (
-                    <TouchableHighlight
-                        onPress={() => console.log('You touched me')}
-                        style={styles.rowFront}
-                        underlayColor={'#EEEEEE'}
-                    >
-                        <View>
-                            <Text>{item.username}</Text>
-                        </View>
-                    </TouchableHighlight>
-                )}
-                renderHiddenItem={(data, rowMap) => (
-                    <View style={styles.rowBack}>
-                        <Text>Left</Text>
-                        <TouchableOpacity
-                            style={[styles.backRightBtn, styles.backRightBtnLeft]}
-                            onPress={() => closeRow(rowMap, data.item.key)}
-                        >
-                            <Text style={styles.backTextWhite}>Close</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[styles.backRightBtn, styles.backRightBtnRight]}
-                            onPress={() => deleteRow(rowMap, data.item.key)}
-                        >
-                            <Text style={styles.backTextWhite}>Delete</Text>
-                        </TouchableOpacity>
-                    </View>
-                )}
-                leftOpenValue={75}
-                rightOpenValue={-150}
-                previewRowKey={'0'}
-                previewOpenValue={-40}
-                previewOpenDelay={3000}
-            />
-        </View>
-        )
+        );
     }
 }
 
@@ -161,12 +273,13 @@ const styles = StyleSheet.create({
         color: '#FFF',
     },
     rowFront: {
-        alignItems: 'center',
-        backgroundColor: '#CCC',
+        alignItems: 'flex-start',
+        backgroundColor: '#C2B0E0',
         borderBottomColor: 'black',
         borderBottomWidth: 1,
-        justifyContent: 'center',
-        height: 50,
+        justifyContent: 'flex-start',
+        paddingLeft: 20,
+        height: 70,
     },
     rowBack: {
         alignItems: 'center',
@@ -192,4 +305,41 @@ const styles = StyleSheet.create({
         backgroundColor: 'red',
         right: 0,
     },
+
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
+    },
+    openButton: {
+        backgroundColor: "#F194FF",
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+    }
 });

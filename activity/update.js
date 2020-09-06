@@ -4,8 +4,7 @@ import React, {
 } from 'react';
 
 
-import { TextInput, Navigator } from 'react-native';
-
+import { TextInput } from 'react-native';
 
 
 import {
@@ -26,17 +25,13 @@ import {
     Item,
     Input,
     Form,
-    Label,
-    ActionSheet
+    DatePicker,
+    Label
 } from 'native-base';
 
 import axios from 'axios'
 
-var BUTTONS = ["Option 0", "Option 1", "Option 2", "Delete", "Cancel"];
-var DESTRUCTIVE_INDEX = 3;
-var CANCEL_INDEX = 4;
-
-export default class AnatomyExample extends Component {
+export default class UpdateCRUD extends Component {
     constructor(props) {
         super(props);
         // this.stateDate = { chosenDate: new Date() };
@@ -47,21 +42,25 @@ export default class AnatomyExample extends Component {
         this.state = {
             username: '',
             description: '',
-            date: '',
+            date: ''
         }
     }
 
-    setDate(newDate) {
-        this.setState({ chosenDate: newDate });
+    componentDidMount() {
+        axios.get('http://192.168.1.20:5000/exercises/' + this.props.route.params.ID)
+            .then(Response => {
+                this.setState({
+                    username: Response.data.username,
+                    description: Response.data.description,
+                    date: Response.data.date
+                })
+            })
+            .catch((Error) => {
+                console.log(Error);
+            })
     }
 
-    // onChangeUsername(e,) {
-    //   this.setState({
-    //     username: e.target.value
-    //   });
-    // }
-
-    onSubmit = () => {
+    onUpdate(id) {
         const exercises = {
             username: this.state.username,
             description: this.state.description,
@@ -75,11 +74,12 @@ export default class AnatomyExample extends Component {
 
         console.log(' EXERCISES ', exercises);
 
-        axios.post('http://192.168.1.20:5000/exercises/add', exercises)
+        axios.post('http://192.168.1.20:5000/exercises/update/' + this.props.route.params.ID, exercises)
             .then(res => console.log(res.data))
     }
 
     render() {
+        console.log(this.props.route.params.ID)
         return (
             <Container>
                 <Content>
@@ -116,7 +116,6 @@ export default class AnatomyExample extends Component {
                         <Card>
                             <CardItem>
                                 <Item floatingLabel>
-
                                     <Label>Duration</Label>
                                     <Input
                                         keyboardType='numeric'
@@ -131,19 +130,12 @@ export default class AnatomyExample extends Component {
                         </Card>
 
                     </Form>
-                    <Button rounded success block
-                        style={{ marginLeft: 20, marginRight: 20, marginTop: 20 }}
+                    <Button rounded block style={{ marginLeft: 20, marginRight: 20, marginTop: 20 }}
                         onPress={() => {
-                            this.onSubmit;
+                            this.onUpdate(this.props.route.params.ID);
+                            this.props.navigation.navigate('Read')
                         }}>
-                        <Text>Submit</Text>
-                    </Button>
-                    <Button rounded block
-                        style={{ marginLeft: 20, marginRight: 20, marginTop: 20 }}
-                        onPress={() => { this.props.navigation.navigate('Read') }} >
-                        <Text>
-                            READ DATA
-                            </Text>
+                        <Text>UPDATE</Text>
                     </Button>
                 </Content>
             </Container>
