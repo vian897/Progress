@@ -18,6 +18,7 @@ import {
     Right,
     Body,
     Icon,
+    SwipeRow,
     Card,
     CardItem,
     Item,
@@ -151,7 +152,6 @@ export default class AnatomyExample extends Component {
                 <View style={styles.header}>
                     <Text style={styles.txtHeader}> Daftar User </Text>
                 </View>
-
                 <SwipeListView
                     keyExtractor={this.keyExtractor}
                     data={this.state.users}
@@ -177,6 +177,7 @@ export default class AnatomyExample extends Component {
                                 </Text>
                             </View>
                         </TouchableHighlight>
+
                     )}
                 />
 
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
     header: {
         marginTop: -20,
         height: 60,
-        backgroundColor: 'brown',
+        backgroundColor: '#9933ff',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -239,7 +240,24 @@ const styles = StyleSheet.create({
     },
     rowBack: {
         alignItems: 'center',
-        backgroundColor: '#DDD',
+        backgroundColor: '#ccff33',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 15,
+    },
+    editBtn: {
+        alignItems: 'center',
+        backgroundColor: '#ccff33',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 15,
+    },
+    deltBtn: {
+        textAlign: 'right',
+        marginEnd: 24,
+        backgroundColor: '#ff0066',
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
