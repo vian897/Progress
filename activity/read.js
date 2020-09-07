@@ -96,28 +96,6 @@ export default class AnatomyExample extends Component {
 
 
     key = (item, index) => index.toString()
-
-    // onChangeUsername(e,) {
-    //   this.setState({
-    //     username: e.target.value
-    //   });
-    // }
-
-    // onSubmit = () => {
-    //     const users = {
-    //         username: this.state.username
-    //     }
-    //     // e.preventDefault();
-
-    //     // const user = {
-    //     //   username: this.state.username,
-    //     // }
-
-    //     console.log(' USER ', users);
-
-    //     axios.post('http://192.168.1.20:5000/users/add', users)
-    //         .then(res => console.log(res.data))
-    // }
     createTwoButtonAlert(id, name, deskripsi, durasi) {
         Alert.alert(
             "Action",

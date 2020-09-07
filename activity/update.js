@@ -34,10 +34,6 @@ import axios from 'axios'
 export default class UpdateCRUD extends Component {
     constructor(props) {
         super(props);
-        // this.stateDate = { chosenDate: new Date() };
-        // this.setDate = this.setDate.bind(this);
-        // this.onChangeUsername = this.onChangeUsername.bind(this);
-        // this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
             username: '',
