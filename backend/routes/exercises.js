@@ -40,7 +40,7 @@ router.route('/update/:id').post((req, res) => {
         .then(exercise => {
             exercise.username = req.body.username;
             exercise.description = req.body.description;
-            exercise.date = req.body.description;
+            exercise.date = req.body.date;
 
             exercise.save()
                 .then(() => res.json('Exercise updated!'))

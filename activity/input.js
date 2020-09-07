@@ -75,7 +75,7 @@ export default class AnatomyExample extends Component {
 
         console.log(' EXERCISES ', exercises);
 
-        axios.post('http://192.168.1.20:5000/exercises/add', exercises)
+        axios.post('http://192.168.1.38:5000/exercises/add', exercises)
             .then(res => console.log(res.data))
     }
 
@@ -134,8 +134,10 @@ export default class AnatomyExample extends Component {
                     <Button rounded success block
                         style={{ marginLeft: 20, marginRight: 20, marginTop: 20 }}
                         onPress={() => {
-                            this.onSubmit;
+                            this.onSubmit();
+                            this.props.navigation.navigate('Read')
                         }}>
+
                         <Text>Submit</Text>
                     </Button>
                     <Button rounded block

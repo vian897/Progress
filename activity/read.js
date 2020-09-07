@@ -53,7 +53,7 @@ export default class AnatomyExample extends Component {
     }
 
     getData() {
-        axios.get('http://192.168.1.20:5000/exercises/')
+        axios.get('http://192.168.1.38:5000/exercises/')
             .then(Response => {
                 const users = Response.data;
                 this.setState({ users })
@@ -76,9 +76,14 @@ export default class AnatomyExample extends Component {
             })
     }
 
+    componentDidUpdate() {
+        this.getData()
+    }
+
 
     componentDidMount() {
-        axios.get('http://192.168.1.20:5000/exercises/')
+        this.getData();
+        axios.get('http://192.168.1.38:5000/exercises/')
             .then(Response => {
                 const users = Response.data;
                 this.setState({ users })
@@ -131,7 +136,7 @@ export default class AnatomyExample extends Component {
                 },
                 {
                     text: "DELETE", onPress: () => {
-                        axios.delete(`http://192.168.1.20:5000/exercises/${id}`).then(res => console.log(res.data));
+                        axios.delete(`http://192.168.1.38:5000/exercises/${id}`).then(res => console.log(res.data));
                         this.getData()
                     }
                 }
@@ -225,10 +230,10 @@ export default class AnatomyExample extends Component {
                 />
 
 
-                <Button
+                {/* <Button
                     title={"REFRESH"}
-                    onPress={this.createThreeButtonAlert}
-                />
+                    onPress={() => { this.getData() }}
+                /> */}
             </View>
         );
     }

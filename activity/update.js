@@ -47,7 +47,7 @@ export default class UpdateCRUD extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://192.168.1.20:5000/exercises/' + this.props.route.params.ID)
+        axios.get('http://192.168.1.38:5000/exercises/' + this.props.route.params.ID)
             .then(Response => {
                 this.setState({
                     username: Response.data.username,
@@ -74,7 +74,7 @@ export default class UpdateCRUD extends Component {
 
         console.log(' EXERCISES ', exercises);
 
-        axios.post('http://192.168.1.20:5000/exercises/update/' + this.props.route.params.ID, exercises)
+        axios.post('http://192.168.1.38:5000/exercises/update/' + this.props.route.params.ID, exercises)
             .then(res => console.log(res.data))
     }
 
