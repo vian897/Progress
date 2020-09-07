@@ -43,7 +43,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 
 // import HomeActivity from './activity/home';
-import InputActivity from './activity/inpuddata';
+import InputActivity from './activity/input';
 import ReadActivity from './activity/read';
 import UpdateActivity from './activity/update';
 
