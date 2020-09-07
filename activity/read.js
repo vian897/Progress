@@ -3,7 +3,7 @@ import React, {
     Component,
 } from 'react';
 
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, TouchableHighlight, Alert, Modal, Button } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, TouchableHighlight, Alert, Modal, Button, ListView } from 'react-native';
 
 // import {} from
 
@@ -33,40 +33,13 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 export default class AnatomyExample extends Component {
     constructor(props) {
         super(props);
-        // this.onChangeUsername = this.onChangeUsername.bind(this);
-        // this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
-            username: '',
-            modalVisible: false,
-            // lastRefresh: Date(Date.now()).toString(),
-
         }
-        // this.refreshScreen = this.refreshScreen.bind(this)
-    }
-
-    setModalVisible = (visible) => {
-        this.setState({ modalVisible: visible });
-    }
-
-    refreshScreen() {
-        this.setState({ lastRefresh: Date(Date.now()).toString() })
     }
 
     getData() {
         axios.get('http://192.168.1.38:5000/exercises/')
-            .then(Response => {
-                const users = Response.data;
-                this.setState({ users })
-                console.log(users)
-            })
-            .catch((Error) => {
-                console.log(Error);
-            })
-    }
-
-    getDataspec(id) {
-        axios.get(`http://192.168.1.20:5000/exercises/update/${id}`)
             .then(Response => {
                 const users = Response.data;
                 this.setState({ users })
@@ -150,9 +123,10 @@ export default class AnatomyExample extends Component {
         return (
             <View style={styles.container} >
                 <View style={styles.header}>
-                    <Text style={styles.txtHeader}> Daftar User </Text>
+                    <Text style={styles.txtHeader}> Daftar List To Do </Text>
                 </View>
-                <SwipeListView
+
+                <FlatList
                     keyExtractor={this.keyExtractor}
                     data={this.state.users}
                     renderItem={({ item }) => (
@@ -162,30 +136,18 @@ export default class AnatomyExample extends Component {
                                 this.createTwoButtonAlert(item._id, item.username, item.description, item.date)
                             }}
                             style={styles.rowFront}
-                            underlayColor={'#EEEEEE'}
                         >
-                            <View>
-                                <Text>
-                                    {item.username}
-                                </Text>
-                                <Text>
-
-                                    {item.description}
-                                </Text>
-                                <Text>
-                                    {item.date}
-                                </Text>
-                            </View>
+                            <Content>
+                                <Card>
+                                    <CardItem>
+                                        <Icon style={{ fontSize: 24 }} type="FontAwesome5" name="hotel" />
+                                        <Text>{item.username}{"\n"}{item.description}{"\n"}{item.date}</Text>
+                                    </CardItem>
+                                </Card>
+                            </Content>
                         </TouchableHighlight>
-
                     )}
                 />
-
-
-                {/* <Button
-                    title={"REFRESH"}
-                    onPress={() => { this.getData() }}
-                /> */}
             </View>
         );
     }
@@ -230,13 +192,10 @@ const styles = StyleSheet.create({
         color: '#FFF',
     },
     rowFront: {
-        alignItems: 'flex-start',
-        backgroundColor: '#C2B0E0',
         borderBottomColor: 'black',
-        borderBottomWidth: 1,
         justifyContent: 'flex-start',
-        paddingLeft: 20,
-        height: 70,
+        marginStart: 10,
+        marginEnd: 10,
     },
     rowBack: {
         alignItems: 'center',

@@ -3,11 +3,6 @@ import React, {
     Component
 } from 'react';
 
-
-import { TextInput, Navigator } from 'react-native';
-
-
-
 import {
     Container,
     Header,
@@ -39,10 +34,6 @@ var CANCEL_INDEX = 4;
 export default class AnatomyExample extends Component {
     constructor(props) {
         super(props);
-        // this.stateDate = { chosenDate: new Date() };
-        // this.setDate = this.setDate.bind(this);
-        // this.onChangeUsername = this.onChangeUsername.bind(this);
-        // this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
             username: '',
@@ -55,24 +46,12 @@ export default class AnatomyExample extends Component {
         this.setState({ chosenDate: newDate });
     }
 
-    // onChangeUsername(e,) {
-    //   this.setState({
-    //     username: e.target.value
-    //   });
-    // }
-
     onSubmit = () => {
         const exercises = {
             username: this.state.username,
             description: this.state.description,
             date: this.state.date
         }
-        // e.preventDefault();
-
-        // const user = {
-        //   username: this.state.username,
-        // }
-
         console.log(' EXERCISES ', exercises);
 
         axios.post('http://192.168.1.38:5000/exercises/add', exercises)
@@ -84,55 +63,41 @@ export default class AnatomyExample extends Component {
             <Container>
                 <Content>
                     <Form>
-                        <Card>
-                            <CardItem>
-                                <Item floatingLabel>
-
-                                    <Label>Username</Label>
-                                    <Input
-                                        onChangeText={username =>
-                                            // console.log(namahotel)
-                                            this.setState({ username: username })
-                                        }
-                                        value={this.state.username}
-                                    />
-                                </Item>
-                            </CardItem>
-                        </Card>
-                        <Card>
-                            <CardItem>
-                                <Item floatingLabel>
-                                    <Label>What To do</Label>
-                                    <Input
-                                        onChangeText={description =>
-                                            // console.log(namahotel)
-                                            this.setState({ description: description })
-                                        }
-                                        value={this.state.description}
-                                    />
-                                </Item>
-                            </CardItem>
-                        </Card>
-                        <Card>
-                            <CardItem>
-                                <Item floatingLabel>
-
-                                    <Label>Duration</Label>
-                                    <Input
-                                        keyboardType='numeric'
-                                        onChangeText={date =>
-                                            // console.log(namahotel)
-                                            this.setState({ date: date })
-                                        }
-                                        value={this.state.date}
-                                    />
-                                </Item>
-                            </CardItem>
-                        </Card>
+                        <Item rounded
+                            style={{ marginTop: 12, marginLeft: 12, marginRight: 12 }}>
+                            <Input
+                                placeholder='Nama'
+                                onChangeText={username =>
+                                    this.setState({ username: username })
+                                }
+                                value={this.state.username}
+                            />
+                        </Item>
+                        <Item rounded
+                            style={{ marginTop: 12, marginLeft: 12, marginRight: 12 }}>
+                            <Input
+                                placeholder='What To Do'
+                                onChangeText={description =>
+                                    this.setState({ description: description })
+                                }
+                                value={this.state.description}
+                            />
+                        </Item>
+                        <Item rounded
+                            style={{ marginTop: 12, marginLeft: 12, marginRight: 12 }}>
+                            <Input
+                                keyboardType='numeric'
+                                placeholder='Duration'
+                                onChangeText={date =>
+                                    this.setState({ date: date })
+                                }
+                                value={this.state.date}
+                            />
+                        </Item>
 
                     </Form>
                     <Button rounded success block
-                        style={{ marginLeft: 20, marginRight: 20, marginTop: 20 }}
+                        style={{ marginLeft: 12, marginRight: 12, marginTop: 20 }}
                         onPress={() => {
                             this.onSubmit();
                             this.props.navigation.navigate('Read')
@@ -141,7 +106,7 @@ export default class AnatomyExample extends Component {
                         <Text>Submit</Text>
                     </Button>
                     <Button rounded block
-                        style={{ marginLeft: 20, marginRight: 20, marginTop: 20 }}
+                        style={{ marginLeft: 12, marginRight: 12, marginTop: 20 }}
                         onPress={() => { this.props.navigation.navigate('Read') }} >
                         <Text>
                             READ DATA
